@@ -59,6 +59,8 @@ $ cd client
 $ npm install
 ```
 
+NB: Use a Node.js version above 18; otherwise, you may encounter issues running the client with Vite
+
 ## Running the app
 
 Both client and server apps will need to running for the app to work, e.g.:
@@ -67,6 +69,7 @@ Both client and server apps will need to running for the app to work, e.g.:
 # Rails
 $ cd server
 $ bin/dev
+$ bundle exec rails s
 
 # React
 $ cd client
