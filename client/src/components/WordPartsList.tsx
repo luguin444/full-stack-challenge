@@ -1,5 +1,5 @@
 import {FC, useEffect, useState} from "react";
-import {WordPart} from "../types/WordPart.ts";
+import { WordPart, WordPartStatus } from "../types/WordPart.ts";
 import WordPartDetail from "./WordPartDetail.tsx";
 
 interface WordPartsViewProps {
@@ -26,12 +26,30 @@ const WordPartsList: FC<WordPartsViewProps> = ({levelId}) => {
     setSelectedWordPart(wordParts.find((wordPart) => wordPart.id === wordPartId) || null);
   }
 
-  const handleNeedsWork = () => {
-    // TODO
+  const updateWordStatus = async (wordId: number, status: WordPartStatus) => {
+    try {
+      const response = await fetch(`/word_parts/${wordId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status }),
+      });
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      prompt(`Could not update the word status`);
+      console.error(error)
+    }
+  };
+
+  const handleNeedsWork = async (wordId: number) => {
+    await updateWordStatus(wordId, WordPartStatus.NEEDS_WORK);
   }
 
-  const handleMastered = () => {
-    // TODO
+  const handleMastered = async (wordId: number) => {
+    await updateWordStatus(wordId, WordPartStatus.MASTERED);
   }
 
   return (
