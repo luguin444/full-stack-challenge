@@ -28,7 +28,7 @@ const WordPartsList: FC<WordPartsViewProps> = ({levelId}) => {
 
   const updateWordStatus = async (wordId: number, status: WordPartStatus) => {
     try {
-      const response = await fetch(`/word_parts/${wordId}`, {
+      await fetch(`/word_parts/${wordId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -36,8 +36,11 @@ const WordPartsList: FC<WordPartsViewProps> = ({levelId}) => {
         body: JSON.stringify({ status }),
       });
 
-      const data = await response.json();
-      return data;
+      setWordParts((prevWordParts) =>
+        prevWordParts.map((wp) =>
+          wp.id === wordId ? { ...wp, status } : wp
+        )
+      );
     } catch (error) {
       prompt(`Could not update the word status`);
       console.error(error)
@@ -56,9 +59,15 @@ const WordPartsList: FC<WordPartsViewProps> = ({levelId}) => {
     <div className="my-4">
       <h2 className="text-xl mb-4">Word Parts</h2>
       {wordParts.map((wordPart) => (
-        <button key={wordPart.id} type="button"
-                className="mr-2 mb-2 px-2 py-1 border rounded hover:bg-gray-200 cursor-pointer"
-                onClick={() => handleWordPartClick(wordPart.id)}>{wordPart.label}</button>
+        <button
+          key={wordPart.id}
+          type="button"
+          className={`mr-2 mb-2 px-2 py-1 border rounded hover:bg-gray-200 cursor-pointer ${
+            wordPart.status === WordPartStatus.NEEDS_WORK ? "bg-red-500 text-white" :
+            wordPart.status === WordPartStatus.MASTERED ? "bg-green-500 text-white" : ""
+          }`}
+          onClick={() => handleWordPartClick(wordPart.id)}>{wordPart.label}
+        </button>
       ))}
       <hr/>
       {selectedWordPart &&
