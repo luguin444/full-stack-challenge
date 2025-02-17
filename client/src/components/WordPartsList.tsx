@@ -43,7 +43,7 @@ const WordPartsList: FC<WordPartsViewProps> = ({levelId}) => {
       );
     } catch (error) {
       prompt(`Could not update the word status`);
-      console.error(error)
+      console.error(error);
     }
   };
 
