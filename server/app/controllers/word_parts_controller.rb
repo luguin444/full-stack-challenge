@@ -9,10 +9,10 @@ class WordPartsController < ApplicationController
     @word_part = WordPart.find(params[:id])
 
     status = params[:status]
+    is_valid_status = WordPart.statuses.keys.include?(status)
 
-    unless WordPart.statuses.keys.include?(status)
-      render json: { error: "Status not allowed" }, status: :unprocessable_entity
-      return
+    unless is_valid_status
+      return render json: { error: "Status not allowed" }, status: :unprocessable_entity
     end
 
     @word_part.update(status: status)
