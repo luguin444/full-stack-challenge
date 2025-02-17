@@ -12,6 +12,10 @@ export default defineConfig({
       '/phonics_levels': {
         target: 'http://localhost:3000',
         changeOrigin: true,
+      },
+      '/word_parts': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
       }
     }
   },
